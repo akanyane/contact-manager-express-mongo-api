@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2023",
+    "module": "nodenext",
     "rootDir": "src",
     "outDir": "dist",
+    "types": ["node"],
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*", "middlewares/*.ts"]
+  "include": ["src/**/*"]
 }

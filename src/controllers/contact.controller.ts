@@ -1,5 +1,5 @@
-const asyncHandler = require("express-async-handler");
-const Contact = require("../models/contact.model");
+import asyncHandler from "express-async-handler";
+import Contact from "../models/contact.model";
 
 const getContact = asyncHandler (async (request, response) => {
   const contact = await Contact.findById(request.params.id);
@@ -15,7 +15,7 @@ const getContact = asyncHandler (async (request, response) => {
 });
 
 const getContacts = asyncHandler (async (request, response) => {
-  const contacts = await Contact.find({ user_id : request.user.id });
+  const contacts = await Contact.find({ user_id : request.user!.id });
   response
     .status(200)
     .json(contacts)
@@ -32,7 +32,7 @@ const createContact = asyncHandler (async (request, response) => {
     name,
     email,
     phone,
-    user_id: request.user.id,
+    user_id: request.user!.id,
   });
 
   response
@@ -48,7 +48,7 @@ const updateContact = asyncHandler (async (request, response) => {
     throw new Error("Contact not found");
   };
 
-  if(contact.user_id.toString() !== request.user.id) {
+  if(contact.user_id.toString() !== request.user!.id) {
     response.status(403);
     throw new Error("User does not have permission to update other user contacts");
   }
@@ -57,7 +57,7 @@ const updateContact = asyncHandler (async (request, response) => {
     request.params.id,
     request.body,
     {
-      new: true,
+      returnDocument: "after",
     }
   );
 
@@ -74,19 +74,19 @@ const deleteContact = asyncHandler (async (request, response) => {
     throw new Error("Contact not found");
   };
 
-  if(contact.user_id.toString() !== request.user.id) {
+  if(contact.user_id.toString() !== request.user!.id) {
     response.status(403);
     throw new Error("User does not have permission to delete other user contacts");
   }
 
   await Contact.deleteOne({ _id: request.params.id });
   response
-    .status(404)
+    .status(200)
     .json(contact)
 });
 
 
-module.exports = {
+export {
   getContact,
   getContacts,
   createContact,

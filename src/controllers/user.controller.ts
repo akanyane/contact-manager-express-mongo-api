@@ -1,7 +1,7 @@
-const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
+import asyncHandler from "express-async-handler";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/user.model";
 
 const registerUser = asyncHandler (async (request, response) => {
   const { username, email, password } = request.body;
@@ -56,7 +56,7 @@ const loginUser = asyncHandler (async (request, response) => {
           id: user.id,
         },
       }, 
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.ACCESS_TOKEN_SECRET as string,
       {
         expiresIn: "120m"
       }
@@ -76,7 +76,7 @@ const currentUser = asyncHandler (async (request, response) => {
     .json(request.user)
 });
 
-module.exports = {
+export {
   registerUser,
   loginUser,
   currentUser,

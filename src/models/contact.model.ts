@@ -1,8 +1,15 @@
-const mongoose = require("mongoose");
+import { Schema, Types, model } from "mongoose";
 
-const contactSchema = mongoose.Schema({
+export interface IContact {
+  user_id: Types.ObjectId;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+const contactSchema = new Schema<IContact>({
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
@@ -22,4 +29,4 @@ const contactSchema = mongoose.Schema({
   timestamps: true,
 });
 
-module.exports = mongoose.model("Contact", contactSchema);
+export default model<IContact>("Contact", contactSchema);
